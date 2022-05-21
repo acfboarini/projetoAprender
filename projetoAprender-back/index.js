@@ -217,5 +217,20 @@ app.listen(PORTA, () => console.log(chalk.bold.green(`servidor online na porta $
 /*** funcoes para retornar as estatisticas ****/
 
 function sendStatistics(listas) {
-
+    let totalQuests = 0
+    let totalCorrectAnswers = 0;
+    let questoesComMinimo = [];
+    for (let i = 0; i < listas.length; i++) {
+        totalQuests += listas[i].totalQuestoes;
+        totalCorrectAnswers += listas[i].qtdAcertos;
+        if (listas[i].qtdAcertos > listas[i].qtdMin) {
+            questoesComMinimo.push(listas[i]);
+        }
+    }
+    const porcentagem = totalCorrectAnswers/totalQuests.toFixed(2);
+    const obj = {
+        porcentagemAcertosTotal: porcentagem,
+        questoesComMinimo
+    }
+    return obj;
 }
