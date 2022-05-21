@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";   
+import { useState, useEffect } from "react";
+import styled from "styled-components";   
 import { useNavigate } from "react-router-dom"
 import { IoPencil } from "react-icons/io5" ; 
 import slyled from 'styled-components';
@@ -25,7 +26,14 @@ export default function Desempenho() {
 
     return ( 
         <Container>
-            <h1>Desempenho</h1>
+            <Header>
+                <Link to="/home">
+                    <Icon>
+                        <ion-icon name="chevron-back-outline"></ion-icon>
+                    </Icon>
+                </Link>
+                <p>Aprender</p>
+            </Header>
             <div className="lista">
                 <h2> Nome lista <IoPencil className="icon"/></h2>
                 <div className="infosQuestoes">
@@ -57,13 +65,14 @@ const Container = slyled.div`
     height: 100vh;
     flex-direction: column;
     text-align: center;
+    font-family: 'Raleway', sans-serif;
     background-color: #00A49E;
 
     font-family: 'Raleway';
     font-style: normal;
 
     h1{
-        font-family: 'Saira Stencil One';
+        font-family: 'Raleway', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 32px;
@@ -140,3 +149,28 @@ const Container = slyled.div`
     
 
 `;
+const Header = styled.header`
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    p {
+        font-size: 24px;
+        font-weight: 500;
+        color: white;
+    }
+`
+const Icon = styled.p`
+    font-size: 30px;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+
+    &:active {
+        opacity: 0.7;
+    }
+`

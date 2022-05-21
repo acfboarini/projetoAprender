@@ -48,12 +48,12 @@ const Container = slyled.div`
     justify-content: center;
     text-align: center;
     background-color: #00A49E;
+    font-family: 'Raleway', sans-serif;
 
-    font-family: 'Raleway';
     font-style: normal;
 
     h1{
-        font-family: 'Saira Stencil One';
+        font-family: 'Raleway', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 32px;
