@@ -215,5 +215,9 @@ app.listen(PORTA, () => console.log(chalk.bold.green(`servidor online na porta $
 /*** funcoes para retornar as estatisticas ****/
 
 function sendStatistics(listas) {
-
+    let totalQuests = 0
+    let totalCorrectAnswers = 0;
+    for (let i = 0; i < listas.length; i++) {
+        listas[i].totalQuestoes
+    }
 }
