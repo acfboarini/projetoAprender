@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";   
+import { useState, useContext } from "react";   
 import { useNavigate } from "react-router-dom"
 import slyled from 'styled-components';
 import axios from "axios";
+import { AprenderContexts } from "../Contexts/index"
 
 
 export default function Login() {
@@ -10,15 +11,16 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { getForms } = useContext(AprenderContexts)
 
     function logar(){
-        axios.post("", {
+        axios.post("http://localhost:5000/login", {
             email,
             senha: password
         }).then(res => {
             console.log(res.data);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('name', res.data.name);
+            window.localStorage.setItem("user", JSON.stringify(res.data));
+            getForms()
             navigate("/home");
         }).catch(err => {
             console.log(err);

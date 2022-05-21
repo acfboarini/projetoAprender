@@ -118,8 +118,8 @@ app.post("/doneLists", async (req, res) => {
                 {userId: user._id},
                 {$push:{doneLists: {...req.body}}}
             );
-            return res.sendStatus(201);
-
+            return res.status(201).send(req.body);
+            
         } else {
             const new_doneLists = await db.collection("user").updateOne(
                 {userId: user._id}, 
@@ -132,6 +132,7 @@ app.post("/doneLists", async (req, res) => {
         console.log(err);
         return res.sendStatus(500);
     }    
+
 });
 
 app.get("/statistics", async (req,res) => {
@@ -194,6 +195,7 @@ app.get("/listas", async (req,res) => {
 
 //RETORNAR LISTA ESPECÍFICA
 app.get("/listas/:ID_LISTA", async (req, res)  => {
+    console.log(req.params.ID_LISTA)
     const listaID = req.params.ID_LISTA;
     try {
         const lista = await db.collection("listas").findOne({_id: new ObjectId(listaID)});

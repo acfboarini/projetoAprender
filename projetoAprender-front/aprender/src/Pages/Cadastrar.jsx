@@ -13,11 +13,11 @@ export default function Cadastrar() {
     const navigate = useNavigate();
     
     function cadastrar(){
-        axios.post("", {
+        axios.post("http://localhost:5000/signup", {
             name: nome,
             email,
             senha: password,
-            confirmacaoSenha: confirmacaoPassword
+            checkSenha: confirmacaoPassword
         }).then(res => {
             navigate("/");
         }).catch(err => {

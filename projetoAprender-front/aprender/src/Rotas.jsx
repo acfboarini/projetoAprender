@@ -14,7 +14,7 @@ export default function Router() {
                 <Routes>
                     <Route path="/" element={<Login/>} />
                     <Route path="/home" element={<HomePage/>} />
-                    <Route path="/formulario" element={<Formulario />} />
+                    <Route path="/formulario/:id" element={<Formulario />} />
                     <Route path="/cadastrar" element={<Cadastrar/>} />
                     <Route path="/desempenho" element={<Desempenho/>} />
                 </Routes>
