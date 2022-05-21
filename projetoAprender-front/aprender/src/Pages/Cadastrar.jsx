@@ -1,46 +1,43 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";   
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
 import slyled from 'styled-components';
 import axios from "axios";
 
+export default function Cadastrar() {
 
-export default function Login() {
-    
     const [email, setEmail] = useState("");
+    const [nome, setNome] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const [confirmacaoPassword, setConfirmacaoPassword] = useState("");
 
-    function logar(){
+    const navigate = useNavigate();
+    
+    function cadastrar(){
         axios.post("", {
+            name: nome,
             email,
-            senha: password
+            senha: password,
+            confirmacaoSenha: confirmacaoPassword
         }).then(res => {
-            console.log(res.data);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('name', res.data.name);
-            navigate("/home");
+            navigate("/");
         }).catch(err => {
             console.log(err);
-            setEmail("");
-            setPassword("");
-            alert("Login ou senha incorretos!");
         });
     }
-
-    return ( 
+    return(
         <Container>
             <h1>Aprender</h1>
-            < input type="email" placeholder="Email" onChange={ e => setEmail(e.target.value)}></input>
+            < input type="input" placeholder="Nome"  onChange={ e => setNome(e.target.value)}></input>
+            < input type="email" placeholder="E-mail" onChange={ e => setEmail(e.target.value)}></input>
             < input type="password" placeholder="Senha" onChange={ e => setPassword(e.target.value)}></input>
-            < button type="submit" onClick={()=> logar()}>Entrar</button>
-            <Link to= "./Cadastrar">
-                <p>Primeira vez? Cadastre-se!</p>
+            < input type="password" placeholder="Confirme a senha" onChange={ e => setConfirmacaoPassword(e.target.value)}></input>
+            < button type="submit" onClick={() => cadastrar()}>Cadastrar</button>
+            <Link to= "/">
+                <p>Já tem uma conta? Entre agora!</p>
             </Link>
         </Container>
     )
 }
-
 
 const Container = slyled.div`
     display: flex;
@@ -110,4 +107,4 @@ const Container = slyled.div`
         color: #FFFFFF;
     }
 
-`;
+`
