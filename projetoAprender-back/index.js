@@ -1,12 +1,11 @@
 import express, {json} from "express";
+import { MongoClient, ObjectId } from "mongodb";
 import cors from "cors";
 import chalk from "chalk";
 import joi from "joi";
-import { ObjectId } from "mongodb";
 import {v4 as uuid} from "uuid";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { MongoClient } from "mongodb";
 
 const app = express();
 
@@ -18,8 +17,8 @@ let db = null;
 const mongoClient = new MongoClient(process.env.DB_URL);
 await mongoClient.connect()
 .then(() => {
-    db = mongoClient.db("aprenderDB");
-    console.log(chalk.bold.blue("Contecado ao banco aprenderDB"));
+    db = mongoClient.db(process.env.MONGO_DATABASE);
+    console.log(chalk.bold.blue(`Contecado ao banco ${process.env.MONGO_DATABASE}`));
 })
 .catch(err => {
     console.log(chalk.bold.red("Erro ao conectar com o banco"), err);
@@ -138,6 +137,55 @@ app.post("/doneLists", async (req, res) => {
 
 app.get("/statistics", async (req,res) => {
 
+});
+
+//POSTAR LISTA
+app.post("/listas", async (req,res) => {
+    const novaLista = req.body;
+    try {
+        const acharLista = await db.collection("listas").findOne({name: novaLista.name});
+        if (!acharLista){
+            await db.collection("listas").insertOne({
+                name: novaLista.name,
+                minAcertos: novaLista.minAcertos,
+                questoes: novaLista.questoes
+            });
+            res.send("lista cadastrada com sucesso").status(201);
+        } else {
+            res.sendStatus(409);
+        }
+    } catch (error){
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+//RETORNAR TODAS AS LISTAS
+app.get("/listas", async (req,res) => {
+    try {
+        const listas = await db.collection("listas").find().toArray();
+        res.send(listas);
+    } catch (error){
+        console.error(error);
+        res.sendStatus(500);
+    }
+});
+
+//RETORNAR LISTA ESPECÍFICA
+app.get("/listas/:ID_LISTA", async (req, res)  => {
+    const listaID = req.params.ID_LISTA;
+    try {
+        const lista = await db.collection("listas").findOne({_id: new ObjectId(listaID)});
+        if (!lista){
+            res.sendStatus(404);
+            return;
+        } else {
+            res.send(lista);
+        }
+    } catch (error){
+        console.error(error);
+        res.sendStatus(500);
+    }
 });
 
 const PORTA = process.env.PORT || 5000;
