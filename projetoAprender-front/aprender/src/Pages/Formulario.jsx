@@ -74,7 +74,7 @@ export default function Formulario() {
                                                         onChange = {(e) => {setRespsotas([...respostas, {
                                                             id: question._id,
                                                             res: e.target.value,
-                                                            isCorrect: e.target.value == question.resCorreta 
+                                                            isCorrect: e.target.value === question.resCorreta 
                                                         }])}}>
                                                             <option value = "">Selecione uma resposta</option>
                                                             {(question.respostas).map((option) => {
