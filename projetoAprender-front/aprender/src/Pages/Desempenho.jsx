@@ -16,7 +16,7 @@ export default function Desempenho() {
     const [ desempenho, setDesempenho] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/statistics`, config)
+        axios.get(`https://app-aprender.herokuapp.com/statistics`, config)
         .then((answer) => {
             // setDesempenho(answer.data); console.log(answer.data);
             console.log(answer)
