@@ -13,7 +13,7 @@ export default function Cadastrar() {
     const navigate = useNavigate();
     
     function cadastrar(){
-        axios.post("http://localhost:5000/signup", {
+        axios.post("https://app-aprender.herokuapp.com/signup", {
             name: nome,
             email,
             senha: password,
