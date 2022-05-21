@@ -1,7 +1,12 @@
 import styled from "styled-components";
+import { AprenderContexts } from "../Contexts/index"
+import { Link } from "react-router-dom";
+import { useContext } from 'react';
 
 export default function HomePage() {
 
+    const { formsInfos } = useContext(AprenderContexts)
+    
     return (
         <>
             <Center>
@@ -11,15 +16,17 @@ export default function HomePage() {
                 <Body>
                     <Margin>
                         <h1>Atividades</h1>
-                        <Lista> {/* FAZER UM MAP AQUI */}
-                            <p>Lista de cálculo 1</p>
-                        </Lista>
-                        <Lista>
-                            <p>Lista de cálculo 1</p>
-                        </Lista>
-                        <Lista>
-                            <p>Lista de cálculo 1</p>
-                        </Lista>
+                        {formsInfos.map((forms) =>
+                            {return (
+                                <>
+                                    <Link to={`/formulario/${forms._id}`}>
+                                        <Lista>
+                                            <p>Lista de cálculo 1</p>
+                                        </Lista>
+                                    </Link>
+                                </>
+                            )}
+                        )}
                     </Margin>
                 </Body>
             </Center>

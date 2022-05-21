@@ -1,11 +1,50 @@
 import styled from "styled-components";
 import RenderButton from "../Componentes/RenderButton"
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from 'react';
+import axios from "axios";
+import { AprenderContexts } from "../Contexts/index"
 
 export default function Formulario() {
+    const userJSON = window.localStorage.getItem("user");
+    const {name, token} = JSON.parse(userJSON);
+    const config = {
+        headers: {Authorization: `Bearer ${token}`}
+    }
 
-    function OnSubmit(){
+    let questionNumber = 0
+    const { id } = useParams();
+    const [ listaInfos, setListaInfos ] = useState([]);
+    const [ respostas, setRespsotas ] = useState([]);
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/listas/${id}`)
+        .then((answer) => {
+            setListaInfos(answer.data.questoes); console.log(answer.data)
+        })
+        .catch((error) => console.log(error))       
+    }, []);
+
+    function OnSubmit(e){
+        e.preventDefault();
+        let acertos = 0
+        respostas.forEach((answer) => {
+            if(answer.isCorrect){
+                acertos ++
+            }
+        })
+        let enviar = {
+            nome: listaInfos.name,
+            id: listaInfos._id,
+            qtdMin: listaInfos.minAcertos,
+            qtdAcertos: acertos,
+            totalQuestoes: acertos.length
+        }
+        axios.post("http://localhost:5000/doneLists", enviar, config)
+        .then((response) => {console.log(response.data); navigate('/desempenho')})
+        .catch((error) => console.log(error))
     }
 
     return (
@@ -21,57 +60,40 @@ export default function Formulario() {
                 </Header>
                 <Body>
                     <Margin>
+                    <Form onSubmit = {OnSubmit}>
                         <Question>
-                            <h1>Questão 1</h1>
-                            <Lista>
-                                <h2>Qual é a derivada de 2x?</h2>
-                                <Form onSubmit = {OnSubmit}>
-                                    <Select
-                                        value = "1"
-                                        required
-                                        onChange = {(e) => ({})}>
-                                            <option value = "">Selecione uma resposta</option>
-                                            <option value = "2">2</option>
-                                            <option value = "0">0</option>
-                                    </Select>
-                                </Form>
-                            </Lista>
+                                {listaInfos.map((question, index) => {
+                                    questionNumber += 1
+                                    return (
+                                        <>
+                                            <h1>Questão {questionNumber}</h1>
+                                            <Lista>
+                                                <h2>{question.pergunta}</h2>
+                                                    <Select
+                                                        required
+                                                        onChange = {(e) => {setRespsotas([...respostas, {
+                                                            id: question._id,
+                                                            res: e.target.value,
+                                                            isCorrect: e.target.value == question.resCorreta 
+                                                        }])}}>
+                                                            <option value = "">Selecione uma resposta</option>
+                                                            {(question.respostas).map((option) => {
+                                                                return (
+                                                                    <>
+                                                                        <option value = {`${option}`}>{`${option}`}</option>
+                                                                    </>
+                                                                )
+                                                            })}
+                                                    </Select>
+                                            </Lista>
+                                        </>
+                                    )
+                                })}
                         </Question>
-                        <Question>
-                            <h1>Questão 1</h1>
-                            <Lista>
-                                <h2>Qual é a derivada de 2x?</h2>
-                                <Form onSubmit = {OnSubmit}>
-                                    <Select
-                                        value = "1"
-                                        required
-                                        onChange = {(e) => ({})}>
-                                            <option value = "">Selecione uma resposta</option>
-                                            <option value = "2">2</option>
-                                            <option value = "0">0</option>
-                                    </Select>
-                                </Form>
-                            </Lista>
-                        </Question>
-                        <Question>
-                            <h1>Questão 1</h1>
-                            <Lista>
-                                <h2>Qual é a derivada de 2x?</h2>
-                                <Form onSubmit = {OnSubmit}>
-                                    <Select
-                                        value = "1"
-                                        required
-                                        onChange = {(e) => ({})}>
-                                            <option value = "">Selecione uma resposta</option>
-                                            <option value = "2">2</option>
-                                            <option value = "0">0</option>
-                                    </Select>
-                                    <Button disabled = {false} type="submit">
-                                        <RenderButton state = {false} text="Enviar respostas"/>
-                                    </Button>
-                                </Form>
-                            </Lista>
-                        </Question>
+                        <Button disabled = {false} type="submit">
+                            <RenderButton state = {false} text="Enviar respostas"/>
+                        </Button>
+                        </Form>
                     </Margin>
                 </Body>
             </Center>
@@ -178,6 +200,7 @@ const Button = styled.button`
     font-weight: 700;
     line-height: 26px;
     color: white;
+    margin-bottom: 20px;
 
     &:disabled {
     opacity: 0.7;
