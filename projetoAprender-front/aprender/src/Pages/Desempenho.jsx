@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";   
 import { useNavigate } from "react-router-dom"
+import { IoPencil } from "react-icons/io5" ; 
 import slyled from 'styled-components';
 import axios from "axios";
 
@@ -31,10 +32,19 @@ export default function Desempenho() {
     return ( 
         <Container>
             <h1>Desempenho</h1>
-            <div className="infosQuestoes">
-                <p>Questoes</p>
-                <p>Acertos</p>
+            <div className="lista">
+                <h2> Nome lista <IoPencil className="icon"/></h2>
+                <div className="infosQuestoes">
+                    <div className="questao">
+                        <p>Questoes: 10</p>
+                    </div>
+                    <div className="acertos">
+                        <p>Acertos: 10%</p>
+                    </div>
+                </div>
+                {/* <button>Enviar</button> */}
             </div>
+           
             
         </Container>
     )
@@ -42,12 +52,16 @@ export default function Desempenho() {
 
 
 const Container = slyled.div`
+
+    *{
+        box-sizing: border-box;
+    }
     display: flex;
+    justify-content: start;
+    align-items: center;
     width: 100%;
     height: 100vh;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
     background-color: #00A49E;
 
@@ -61,16 +75,50 @@ const Container = slyled.div`
         font-size: 32px;
         line-height: 50px;
         color: #FFFFFF;
-        margin-bottom: 24px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+
+    .lista{
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        height: 150px;
+        background: #FB7E00;
+        border-radius: 10px;
+
+        h2{
+            font-family: 'Saira Stencil One';
+            width: 100%;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #00605F;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 50px;
+            color: #FFFFFF;
+            margin-bottom: 5px;
+            border-radius: 10px 10px 0px 0px;
+
+            .icon{
+                margin-left: 10px;
+                color: #FBB019;
+            }
+        }
     }
 
     .infosQuestoes{
         margin-top: 24px;
-        padding: 24px;
+        margin-bottom: 24px;
         display: flex;
         justify-content: space-between;
-        width: 100%;
-        height: 100vh;
+        width: 98%;
+        height: auto;
         blackground: yellow;
         p{
             font-weight: 700;
@@ -79,6 +127,20 @@ const Container = slyled.div`
 
             color: #FFFFFF;
         }
+    }
+
+    button{
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        border-radius: 10px;
+        background-color: #FF4200;
+        color: #FFFFFF;
+        font-size: 30px;
+        border: none;
+        height: 60px;
     }
 
     

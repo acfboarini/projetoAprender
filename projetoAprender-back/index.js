@@ -22,7 +22,6 @@ await mongoClient.connect()
 })
 .catch(err => {
     console.log(chalk.bold.red("Erro ao conectar com o banco"), err);
-
 })
 
 app.post("/signup", async (req, res) => {
@@ -112,11 +111,11 @@ app.post("/doneLists", async (req, res) => {
 
         const {doneLists} = user;
         if (doneLists) {
-            const product = await db.collection("user").findOne({userId: user._id, doneLists: ObjectId(listId)});
-            if (product) return res.sendStatus(409);
+            const lists = await db.collection("user").findOne({userId: user._id, doneLists: ObjectId(listId)});
+            if (lists) return res.sendStatus(409);
 
             await db.collection("user").updateOne(
-                {userId: user._id}, 
+                {userId: user._id},
                 {$push:{doneLists: {...req.body}}}
             );
             return res.status(201).send(req.body);
@@ -137,7 +136,29 @@ app.post("/doneLists", async (req, res) => {
 });
 
 app.get("/statistics", async (req,res) => {
+    const {authorization} = req.headers;
+    const token = authorization?.replace("Bearer", "").trim();
+    if (!token) return res.sendStatus(401);
 
+    try {
+        const session = await db.collection("sessions").findOne({token: token});
+        if (!session) return res.sendStatus(401);
+
+        const user = await db.collection("users").findOne({_id: session.userId});
+        if (!user) return res.sendStatus(401);
+
+        const {doneLists} = user;
+        if (doneLists) {
+            const statistics = sendStatistics(doneLists);
+            return res.status(200).send({statistics});
+        } else {
+            return res.status(200).send("VOCE NAO TEM NENHUMA LISTA FEITA");
+        }
+
+    } catch(err) {
+        console.log(err);
+        return res.sendStatus(500);
+    }    
 });
 
 //POSTAR LISTA
@@ -192,3 +213,9 @@ app.get("/listas/:ID_LISTA", async (req, res)  => {
 
 const PORTA = process.env.PORT || 5000;
 app.listen(PORTA, () => console.log(chalk.bold.green(`servidor online na porta ${PORTA}`)))
+
+/*** funcoes para retornar as estatisticas ****/
+
+function sendStatistics(listas) {
+
+}
