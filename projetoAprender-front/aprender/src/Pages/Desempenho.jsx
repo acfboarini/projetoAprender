@@ -31,10 +31,16 @@ export default function Desempenho() {
     return ( 
         <Container>
             <h1>Desempenho</h1>
+            <h1> NOme lista</h1>
             <div className="infosQuestoes">
-                <p>Questoes</p>
-                <p>Acertos</p>
+                <div className="questao">
+                    <p>Questoes: 10</p>
+                </div>
+                <div className="acertos">
+                    <p>Acertos: 10%</p>
+                </div>
             </div>
+            <button>Enviar</button>
             
         </Container>
     )
@@ -42,12 +48,16 @@ export default function Desempenho() {
 
 
 const Container = slyled.div`
+
+    *{
+        box-sizing: border-box;
+    }
     display: flex;
+    justify-content: start;
+    align-items: center;
     width: 100%;
     height: 100vh;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
     background-color: #00A49E;
 
@@ -66,11 +76,11 @@ const Container = slyled.div`
 
     .infosQuestoes{
         margin-top: 24px;
-        padding: 24px;
+        margin-bottom: 24px;
         display: flex;
         justify-content: space-between;
-        width: 100%;
-        height: 100vh;
+        width: 90%;
+        height: auto;
         blackground: yellow;
         p{
             font-weight: 700;
@@ -79,6 +89,16 @@ const Container = slyled.div`
 
             color: #FFFFFF;
         }
+    }
+
+    button{
+    
+        padding: 24px;
+        display: flex;
+
+        justify-content: space-between;
+        width: 90%;
+        height: 60px;
     }
 
     
