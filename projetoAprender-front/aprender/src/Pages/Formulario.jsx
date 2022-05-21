@@ -3,7 +3,6 @@ import RenderButton from "../Componentes/RenderButton"
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from 'react';
 import axios from "axios";
-import { AprenderContexts } from "../Contexts/index"
 
 export default function Formulario() {
     const userJSON = window.localStorage.getItem("user");

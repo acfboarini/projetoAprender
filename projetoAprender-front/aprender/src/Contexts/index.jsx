@@ -17,7 +17,7 @@ export const AprenderProvider = ({ children }) => {
         <AprenderContexts.Provider
             value = {{
                 getForms,
-                formsInfos
+                formsInfos,
             }}
         > 
             { children }

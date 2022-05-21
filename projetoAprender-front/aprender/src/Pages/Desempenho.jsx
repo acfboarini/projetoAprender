@@ -1,33 +1,27 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";   
+import { useState, useEffect } from "react";   
 import { useNavigate } from "react-router-dom"
 import { IoPencil } from "react-icons/io5" ; 
 import slyled from 'styled-components';
 import axios from "axios";
 
-
 export default function Desempenho() {
-    
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    // const navigate = useNavigate();
+    const userJSON = window.localStorage.getItem("user");
+    const {name, token} = JSON.parse(userJSON);
+    const config = {
+        headers: {Authorization: `Bearer ${token}`}
+    }
 
-    // function logar(){
-    //     axios.post("https://back-wallett.herokuapp.com/login", {
-    //         email,
-    //         senha: password
-    //     }).then(res => {
-    //         console.log(res.data);
-    //         localStorage.setItem('token', res.data.token);
-    //         localStorage.setItem('name', res.data.name);
-    //         navigate("/home");
-    //     }).catch(err => {
-    //         console.log(err);
-    //         setEmail("");
-    //         setPassword("");
-    //         alert("Login ou senha incorretos!");
-    //     });
-    // }
+    const [ desempenho, setDesempenho] = useState([])
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/statistics`, config)
+        .then((answer) => {
+            // setDesempenho(answer.data); console.log(answer.data);
+            console.log(answer)
+        })
+        .catch((error) => console.log(error))       
+    }, []);
 
     return ( 
         <Container>
