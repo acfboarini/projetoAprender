@@ -100,7 +100,7 @@ app.post("/doneLists", async (req, res) => {
     const {authorization} = req.headers;
     const token = authorization?.replace("Bearer", "").trim();
     if (!token) return res.sendStatus(401);
-    const {listId} = req.body;
+    const {listaID} = req.body;
 
     try {
         const session = await db.collection("sessions").findOne({token: token});
@@ -111,7 +111,7 @@ app.post("/doneLists", async (req, res) => {
 
         const {doneLists} = user;
         if (doneLists) {
-            const lists = await db.collection("user").findOne({userId: user._id, doneLists: ObjectId(listId)});
+            const lists = await db.collection("user").findOne({userId: user._id, doneLists: ObjectId(listaID)});
             if (lists) return res.sendStatus(409);
 
             await db.collection("user").updateOne(
