@@ -14,7 +14,7 @@ export default function Login() {
     const { getForms } = useContext(AprenderContexts)
 
     function logar(){
-        axios.post("http://localhost:5000/login", {
+        axios.post("https://app-aprender.herokuapp.com/login", {
             email,
             senha: password
         }).then(res => {
@@ -53,12 +53,11 @@ const Container = slyled.div`
     justify-content: center;
     text-align: center;
     background-color: #00A49E;
-
-    font-family: 'Raleway';
+    font-family: 'Raleway', sans-serif;
     font-style: normal;
 
     h1{
-        font-family: 'Saira Stencil One';
+        font-family: 'Raleway', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 32px;

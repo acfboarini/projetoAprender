@@ -3,7 +3,6 @@ import RenderButton from "../Componentes/RenderButton"
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from 'react';
 import axios from "axios";
-import { AprenderContexts } from "../Contexts/index"
 
 export default function Formulario() {
     const userJSON = window.localStorage.getItem("user");
@@ -20,7 +19,7 @@ export default function Formulario() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/listas/${id}`)
+        axios.get(`https://app-aprender.herokuapp.com/listas/${id}`)
         .then((answer) => {
             setListaInfos(answer.data.questoes); console.log(answer.data)
         })
@@ -42,7 +41,7 @@ export default function Formulario() {
             qtdAcertos: acertos,
             totalQuestoes: acertos.length
         }
-        axios.post("http://localhost:5000/doneLists", enviar, config)
+        axios.post("https://app-aprender.herokuapp.com/doneLists", enviar, config)
         .then((response) => {console.log(response.data); navigate('/desempenho')})
         .catch((error) => console.log(error))
     }

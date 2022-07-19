@@ -8,7 +8,7 @@ export const AprenderProvider = ({ children }) => {
     const [ formsInfos, setFormsInfos ] = useState([])
 
     const getForms = () => {
-        axios.get("http://localhost:5000/listas")
+        axios.get("https://app-aprender.herokuapp.com/listas")
         .then((answer) => {setFormsInfos(answer.data); console.log(answer.data)})
         .catch((error) => console.log(error))
     }
@@ -17,7 +17,7 @@ export const AprenderProvider = ({ children }) => {
         <AprenderContexts.Provider
             value = {{
                 getForms,
-                formsInfos
+                formsInfos,
             }}
         > 
             { children }

@@ -146,15 +146,15 @@ app.get("/statistics", async (req,res) => {
 
         const user = await db.collection("users").findOne({_id: session.userId});
         if (!user) return res.sendStatus(401);
-
+        console.log(user)
         const {doneLists} = user;
+        console.log(doneLists)
         if (doneLists) {
             const statistics = sendStatistics(doneLists);
             return res.status(200).send({statistics});
         } else {
             return res.status(200).send("VOCE NAO TEM NENHUMA LISTA FEITA");
         }
-
     } catch(err) {
         console.log(err);
         return res.sendStatus(500);

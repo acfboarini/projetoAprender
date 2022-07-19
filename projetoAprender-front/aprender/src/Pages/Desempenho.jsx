@@ -1,37 +1,39 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";   
+import { useState, useEffect } from "react";
+import styled from "styled-components";   
 import { useNavigate } from "react-router-dom"
 import { IoPencil } from "react-icons/io5" ; 
 import slyled from 'styled-components';
 import axios from "axios";
 
-
 export default function Desempenho() {
-    
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    // const navigate = useNavigate();
+    const userJSON = window.localStorage.getItem("user");
+    const {name, token} = JSON.parse(userJSON);
+    const config = {
+        headers: {Authorization: `Bearer ${token}`}
+    }
 
-    // function logar(){
-    //     axios.post("https://back-wallett.herokuapp.com/login", {
-    //         email,
-    //         senha: password
-    //     }).then(res => {
-    //         console.log(res.data);
-    //         localStorage.setItem('token', res.data.token);
-    //         localStorage.setItem('name', res.data.name);
-    //         navigate("/home");
-    //     }).catch(err => {
-    //         console.log(err);
-    //         setEmail("");
-    //         setPassword("");
-    //         alert("Login ou senha incorretos!");
-    //     });
-    // }
+    const [ desempenho, setDesempenho] = useState([])
+
+    useEffect(() => {
+        axios.get(`https://app-aprender.herokuapp.com/statistics`, config)
+        .then((answer) => {
+            // setDesempenho(answer.data); console.log(answer.data);
+            console.log(answer)
+        })
+        .catch((error) => console.log(error))       
+    }, []);
 
     return ( 
         <Container>
-            <h1>Desempenho</h1>
+            <Header>
+                <Link to="/home">
+                    <Icon>
+                        <ion-icon name="chevron-back-outline"></ion-icon>
+                    </Icon>
+                </Link>
+                <p>Aprender</p>
+            </Header>
             <div className="lista">
                 <h2> Nome lista <IoPencil className="icon"/></h2>
                 <div className="infosQuestoes">
@@ -63,13 +65,14 @@ const Container = slyled.div`
     height: 100vh;
     flex-direction: column;
     text-align: center;
+    font-family: 'Raleway', sans-serif;
     background-color: #00A49E;
 
     font-family: 'Raleway';
     font-style: normal;
 
     h1{
-        font-family: 'Saira Stencil One';
+        font-family: 'Raleway', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 32px;
@@ -146,3 +149,28 @@ const Container = slyled.div`
     
 
 `;
+const Header = styled.header`
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    p {
+        font-size: 24px;
+        font-weight: 500;
+        color: white;
+    }
+`
+const Icon = styled.p`
+    font-size: 30px;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+
+    &:active {
+        opacity: 0.7;
+    }
+`
